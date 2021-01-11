@@ -1,3 +1,3 @@
 # go-passmaker
 
-java password generator for the cli
+go password generator for the cli

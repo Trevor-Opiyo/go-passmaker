@@ -2,20 +2,26 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 	"reflect"
 	"strings"
-	"time"
+	"encoding/binary"
+	crypto_rand "crypto/rand"
+	math_rand "math/rand"
 )
 
 func main() {
-	rand.Seed(time.Now().UTC().UnixNano())
+	var b [8]byte
+	_, err := crypto_rand.Read(b[:])
+	if err != nil {
+	panic("cannot seed math/rand package with cryptographically secure random number generator")
+	}
+	math_rand.Seed(int64(binary.LittleEndian.Uint64(b[:])))
 	options := ""
-	passLen := 9
+	var passLen int
 	uppers := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	lowers := strings.ToLower(uppers)
 	nums := "1234567890"
-	specs := "!@#$%^&*()_-+=<>?"
+	specs := "!@#$^&*()_-+=<>?"
 
 	fmt.Println("----------------------------------\n        Password Generator\n----------------------------------")
 	options = addOptions(options, uppers, "upper-case letters")
@@ -61,7 +67,7 @@ outer:
 		fmt.Println("The password is:")
 		for iterator := 0; iterator < passLen; iterator++ {
 			opttionsLen := len(options)
-			randIndex := rand.Intn(opttionsLen)
+			randIndex := math_rand.Intn(opttionsLen)
 			fmt.Printf("%c", options[randIndex])
 		}
 		var userInput string

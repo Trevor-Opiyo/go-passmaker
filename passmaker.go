@@ -1,19 +1,21 @@
 package main
 
 import (
+	crypto_rand "crypto/rand"
+	"encoding/binary"
 	"fmt"
+	math_rand "math/rand"
 	"reflect"
 	"strings"
-	"encoding/binary"
-	crypto_rand "crypto/rand"
-	math_rand "math/rand"
 )
+
+//We include the crypto_rand library in order to seed the value for the standard math_rand library
 
 func main() {
 	var b [8]byte
 	_, err := crypto_rand.Read(b[:])
 	if err != nil {
-	panic("cannot seed math/rand package with cryptographically secure random number generator")
+		panic("cannot seed math/rand package with cryptographically secure random number generator")
 	}
 	math_rand.Seed(int64(binary.LittleEndian.Uint64(b[:])))
 	options := ""
@@ -32,6 +34,8 @@ func main() {
 	generate(passLen, options)
 }
 
+//Function to include character types in the password options variable
+
 func addOptions(original string, addition string, characterType string) string {
 	var userInput string
 	for {
@@ -48,6 +52,8 @@ func addOptions(original string, addition string, characterType string) string {
 	}
 }
 
+//Function to set the length of the password from user input
+
 func passLength() int {
 	for {
 		var userInput int
@@ -60,6 +66,8 @@ func passLength() int {
 		fmt.Println("Please enter a valid response.")
 	}
 }
+
+//Function to present random selection of characters in password
 
 func generate(passLen int, options string) {
 outer:

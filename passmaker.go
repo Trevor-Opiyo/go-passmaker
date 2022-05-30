@@ -15,7 +15,7 @@ func main() {
 	var b [8]byte
 	_, err := crypto_rand.Read(b[:])
 	if err != nil {
-		panic("cannot seed math/rand package with cryptographically secure random number generator")
+		panic("\ncannot seed math/rand package with cryptographically secure random number generator")
 	}
 	math_rand.Seed(int64(binary.LittleEndian.Uint64(b[:])))
 	options := ""
@@ -39,7 +39,7 @@ func main() {
 func addOptions(original string, addition string, characterType string) string {
 	var userInput string
 	for {
-		fmt.Println("Include " + characterType + "? [Y/N]")
+		fmt.Println("\nInclude " + characterType + "? [Y/N]")
 		fmt.Scan(&userInput)
 		switch userInput {
 		case "Y", "y", "yes", "Yes", "YES":
@@ -47,7 +47,7 @@ func addOptions(original string, addition string, characterType string) string {
 		case "N", "n", "no", "No", "NO":
 			return original
 		default:
-			fmt.Println("Please enter a valid response.")
+			fmt.Println("\nPlease enter a valid response.")
 		}
 	}
 }
@@ -57,13 +57,13 @@ func addOptions(original string, addition string, characterType string) string {
 func passLength() int {
 	for {
 		var userInput int
-		fmt.Println("Enter an integer length for the password.")
+		fmt.Println("\nEnter an integer length for the password.")
 		fmt.Scan(&userInput)
 		temp := reflect.TypeOf(userInput).Kind()
 		if temp == reflect.Int {
 			return userInput
 		}
-		fmt.Println("Please enter a valid response.")
+		fmt.Println("\nPlease enter a valid response.")
 	}
 }
 
@@ -72,12 +72,14 @@ func passLength() int {
 func generate(passLen int, options string) {
 outer:
 	for {
-		fmt.Println("The password is:")
+		fmt.Println("\nThe password is:")
+		fmt.Println()
 		for iterator := 0; iterator < passLen; iterator++ {
 			opttionsLen := len(options)
 			randIndex := math_rand.Intn(opttionsLen)
 			fmt.Printf("%c", options[randIndex])
 		}
+		fmt.Println()
 		var userInput string
 		fmt.Println("\nWould you like to regenerate another password with the same parameters? [Y/N]")
 		fmt.Scan(&userInput)
@@ -87,7 +89,7 @@ outer:
 		case "N", "n", "no", "No", "NO":
 			break outer
 		default:
-			fmt.Println("Please enter a valid response.")
+			fmt.Println("\nPlease enter a valid response.")
 		}
 	}
 }
